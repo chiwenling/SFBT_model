@@ -5,9 +5,8 @@ import ChatComponent from "../Components/ChatComponent ";
 export default function AIchat() {
   return (
     <div className="mt-20">
-      <div className="min-h-screen lg:flex justify-end">
+      <div className="min-h-screen w-full flex justify-center">
         <ChatComponent />
-        {/* <ChatHistory /> */}
       </div>
     </div>
   );
