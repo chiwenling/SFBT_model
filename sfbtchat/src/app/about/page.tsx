@@ -1,5 +1,4 @@
-import Button from '../Components/Button';
-import Image from 'next/image';
+// 此頁為操作流程
 
 export default function Aboutpage() {
   return (

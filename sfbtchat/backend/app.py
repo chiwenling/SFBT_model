@@ -5,11 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
 
+# 選/opt/homebrew/anaconda3/bin/python編輯器
+
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
-    # "https://mooding-up.vercel.app","https://papapa.work"
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],  
@@ -30,6 +32,16 @@ else:
 class MessageRequest(BaseModel):
     prompt: str
 
+system_message = {
+    "role": "system",
+    "content": (
+        "你是一位職涯輔導員，會使用焦點解決短期諮商（Solution-focused brief therapy, SFBT）的方法\n"
+        "例如例外問句、奇蹟問句、量詞問句等，幫助使用者從小改變開始。\n"
+        "你的目標是協助正在找工作的使用者，引導他們一步步看到可行的做法。\n"
+    )
+}
+
+
 # system_message = {
 #     "role": "system",
 #     "content": (
@@ -43,16 +55,6 @@ class MessageRequest(BaseModel):
 #         "這樣使用者就可以根據自己的情況進行選擇和調整，確保每個步驟都能順利執行。"
 #     )
 # }
-
-system_message = {
-    "role": "system",
-    "content": (
-        "你是一位職涯輔導員，會使用焦點解決短期諮商（Solution-focused brief therapy, SFBT）的方法\n"
-        "例如例外問句、奇蹟問句、量詞問句等，幫助使用者從小改變開始。\n"
-        "你的目標是協助正在找工作的使用者，引導他們一步步看到可行的做法。\n"
-    )
-}
-
 
 # "對話時請保持簡單自然，像日常對話一樣，不要說出你使用了哪種理論方法，請讓對話聽起來像真實的交流。"
 

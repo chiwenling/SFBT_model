@@ -10,7 +10,9 @@ import { selectCurrentUser, userLoggedOut, selectAuthLoading } from "../../../li
 
 const navigation = [
   { name: "操作流程", href: "/about", current: false },
-  { name: "開啟對話", href: "/booking", current: false }
+  { name: "A組", href: "/collaboration", current: false },
+  { name: "B組", href: "/guidance", current: false },
+  { name: "C組", href: "/independent", current: false }
 ];
 
 function classNames(...classes: (string | undefined | null | false)[]) {
@@ -71,11 +73,6 @@ export default function MyHeader() {
       </div>
 
       <div className="hidden lg:flex items-center space-x-1 pr-20 md:p-0">
-        <Link href="/profile">
-          <div onClick={(e) => handleClick(e, "/profile")} className="text-sisal-900 hover:bg-sisal-400 hover:text-white rounded-lg px-4 py-2 text-lg font-normal cursor-pointer">
-            會員中心
-          </div>
-        </Link>
 
         {user || loading ? (
           <button onClick={handleSignOut} className="text-lg text-sisal-900 px-4 py-2 rounded-lg hover:bg-sisal-500 hover:text-white"> 會員登出</button>

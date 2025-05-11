@@ -6,14 +6,12 @@ import Footer from "./Components/Footer";
 
 import StoreProvider from './StoreProvider';
 import AuthListener from "./Components/AuthListener";
-import { QuizProvider } from "./Components/QuizContext";
-import { ScoreProvider } from "./Components/ScoreContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MoodingUp 職涯心理輔導平台",
-  description: "職涯心理輔導平台",
+  title: "輔導平台",
+  description: "輔導平台",
 };
 
 export default function RootLayout({
@@ -27,13 +25,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <AuthListener />
-          <QuizProvider>
-            <ScoreProvider>
-              <MyHeader />
+            <MyHeader />
               {children}
-              <Footer />
-            </ScoreProvider>
-          </QuizProvider>
+            <Footer />
         </StoreProvider>
       </body>
     </html>
