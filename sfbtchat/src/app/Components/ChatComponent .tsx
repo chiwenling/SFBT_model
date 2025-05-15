@@ -11,7 +11,8 @@ import remarkGfm from "remark-gfm";
 export default function ChatComponent() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [messages, setMessages] = useState([
-    { type: "received", content: "Hi 你今天好嗎 有什麼問題都可以與我聊聊喔！" },
+    { type: "received", content: "嗨，上週過得好嗎～很高興有機會和你聊聊！"},
+    { type: "received", content: "我們可以一起討論看看，你想要找什麼樣的工作或實習呢？"},
   ]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -106,7 +107,7 @@ export default function ChatComponent() {
         <div className="bg-white rounded-lg shadow-xl p-4">
           <div className="m-3 flex flex-col items-center">
             <div className="flex mb-3 text-sisal-900">開啟對話時間：{currentTime}</div>
-            <div className="flex mb-5 text-red-900">小提醒 : 本次對話為一次性</div>
+            <div className="flex mb-5 text-red-900 items-start">小提醒：每次對話結束後，將無法重啟對談。</div>
           </div>
           <div className="mt-5 mb-5 ml-3">
             <div className="text-xl font-medium">職涯輔導員</div>
@@ -153,29 +154,35 @@ export default function ChatComponent() {
             )}
           </div>
 
-          <div className="mt-4 flex items-center">
+          <div className="mt-4 flex pl-10">
             <input 
               type="text" 
-              placeholder="請放心輸入內容～輸入完畢請點選送出"
-              className="flex-1 py-3 px-3 rounded-full bg-gray-100 focus:outline-none text-md"
+              placeholder="請放心輸入內容～輸入完畢，請用滑鼠點選右方「送出」"
+              className="flex-1 py-3 px-3 pl-10 rounded-full bg-gray-100 focus:outline-none text-md"
               value={inputValue} 
               onChange={(e) => setInputValue(e.target.value)}  
               onClick={() => handleSend(inputValue)} 
               disabled={loading}    
             />
             <button
-              className="px-4 py-2 ml-3 text-white rounded-full bg-sisal-400 hover:bg-sisal-600 disabled:bg-gray-400 disabled:hover:bg-gray-400"
+              className="px-4 py-2 ml-3 text-white rounded-full bg-blue-500 hover:bg-blue-400 disabled:bg-gray-400 disabled:hover:bg-gray-400"
               onClick={() => handleSend(inputValue)}
               disabled={loading || chatEnd}
             >
               {loading ? "請稍等..." : "送  出"}
             </button>
-            <button className={chatEnd ? "bg-red-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-red-500" : "bg-sisal-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-sisal-500"}
-              onClick={chatEnd ? saveHistory : stopTalk}
-            >{chatEnd ? "儲存對話" : "結束對話"}</button>
           </div>
         </div>
       </div>
+      <div className="flex mt-5 ml-10 items-left mb-5 flex-col">
+        <div className="ml-10 text-base tracking-wider">1.  如果您想要結束對話，請點選結束對話。</div>
+        <div className="ml-10 text-base tracking-wider">2. 結束後，請您再次點擊儲存對話，並且舉手告知實驗人員。</div>
+      </div>
+      <div className="ml-20">
+         <button className={chatEnd ? "bg-red-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-red-500" : "bg-sisal-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-sisal-500"}
+              onClick={chatEnd ? saveHistory : stopTalk}
+            >{chatEnd ? "儲存對話" : "結束對話"}</button>
+      </div>     
     </div>
   );
 };

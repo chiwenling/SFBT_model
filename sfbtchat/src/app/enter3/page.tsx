@@ -24,7 +24,7 @@ export default function Home() {
         <p className="text-gray-700 mb-4">
           本實驗並非以治療為目的，但是在過程中仍有可能觸及您過往的經驗或引發情緒反應。若在實驗進行中出現嚴重負向情緒，您可隨時選擇終止實驗，並請告知實驗人員。感謝。
         </p>
-        <Link href="/test01">
+        <Link href="/enter3/test03">
         <button className="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
           開始實驗
         </button>

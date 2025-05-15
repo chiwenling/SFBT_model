@@ -37,7 +37,7 @@ export default function MyHeader() {
   };
 
   const handleClick = (e: any, href: string) => {
-    if ((!user && (href === "/booking" || href === "/profile" || href === "/test"))) {
+    if ((!user && (href === "/test01" || href === "/test02" || href === "/test03"))) {
       e.preventDefault();
       router.push("/login");
     }

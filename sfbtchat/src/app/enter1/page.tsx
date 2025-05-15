@@ -1,6 +1,7 @@
 // 這是首頁
 import Link from "next/link";
 import React from "react";
+
 export default function Home() {
   return (
     <div className="h-screen mt-10 bg-gray-100 text-lg">
@@ -16,7 +17,7 @@ export default function Home() {
           <li>目前有求職意願，且正在尋找相關工作機會</li>
         </ul>
         <p className="text-gray-700 mb-10">
-          請確認您符合上述條件，並且願意參與本次實驗。此次研究所蒐集的所有資料將進行匿名化處理，僅用於學術研究目的，請您安心執行實驗。
+          請確認您符合上述條件，並且願意參與本次實驗，請填寫知情同意書。此次研究所蒐集的所有資料將進行匿名化處理，僅用於學術研究目的，請您安心執行實驗。
         </p>
         <p className="text-gray-700 mb-2 font-bold">
           最後提醒：
@@ -24,7 +25,7 @@ export default function Home() {
         <p className="text-gray-700 mb-4">
           本實驗並非以治療為目的，但是在過程中仍有可能觸及您過往的經驗或引發情緒反應。若在實驗進行中出現嚴重負向情緒，您可隨時選擇終止實驗，並請告知實驗人員。感謝。
         </p>
-        <Link href="/test01">
+        <Link href="/enter1/test01">
         <button className="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
           開始實驗
         </button>

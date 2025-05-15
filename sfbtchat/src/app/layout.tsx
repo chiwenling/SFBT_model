@@ -25,9 +25,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <AuthListener />
-            <MyHeader />
+            {/* <MyHeader /> */}
               {children}
-            <Footer />
+            {/* <Footer /> */}
         </StoreProvider>
       </body>
     </html>
