@@ -19,6 +19,7 @@ export default function ChatComponent() {
   const [currentTime, selectCurrentTime] = useState("");
   const user = useSelector(selectCurrentUser);
   const [chatEnd, setChatEnd] = useState(false);
+  const [typing, setTyping] = useState(false); 
 
   // 處理使用者送出訊息
   const handleSend = async (prompt: string, isHidden = false) => {
@@ -32,6 +33,8 @@ export default function ChatComponent() {
       setMessages(prevMessages => [...prevMessages, { type: "sent", content: prompt }]);;
       setLoading(true);
     };
+
+    setTyping(true);
 
     try {
       // 串接AI 向後端發送請求
@@ -60,6 +63,10 @@ export default function ChatComponent() {
       ]);
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        setTyping(false);
+        setLoading(false);
+      }, 5000);
     }
   };
 
