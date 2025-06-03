@@ -2,8 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { collection, addDoc } from "firebase/firestore"
 import { db } from "./../../../firebase"
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../../lib/features/auth/authSlice";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -11,15 +9,14 @@ import remarkGfm from "remark-gfm";
 export default function ChatComponent() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [messages, setMessages] = useState([
-    { type: "received", content: "嗨，上週過得好嗎～很高興有機會和你聊聊！"},
-    { type: "received", content: "我們可以一起討論看看，你想要找什麼樣的工作或實習呢？"},
+    { type: "received", content: "嗨，上週過得好嗎～很高興有機會和你聊聊！" },
+    { type: "received", content: "我們可以一起討論看看，你想要找什麼樣的工作或實習呢？" },
   ]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentTime, selectCurrentTime] = useState("");
-  const user = useSelector(selectCurrentUser);
   const [chatEnd, setChatEnd] = useState(false);
-  const [typing, setTyping] = useState(false); 
+  const [typing, setTyping] = useState(false);
 
   // 處理使用者送出訊息
   const handleSend = async (prompt: string, isHidden = false) => {
@@ -32,6 +29,14 @@ export default function ChatComponent() {
     if (!isHidden) {
       setMessages(prevMessages => [...prevMessages, { type: "sent", content: prompt }]);;
       setLoading(true);
+
+      // 等待2秒後再顯示打字中
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "received", content: "打字中..." },
+      ]);
     };
 
     setTyping(true);
@@ -48,25 +53,31 @@ export default function ChatComponent() {
 
       const data = await response.json();
       console.log("收到的data", data);
+
+      // 等待15秒後再顯示回應
+      await new Promise(resolve => setTimeout(resolve, 15000));
+
       setMessages(function (prevMessages) {
+        // 移除"打字中..."的訊息
+        const filteredMessages = prevMessages.filter(msg => msg.content !== "打字中...");
         return [
-          ...prevMessages,
+          ...filteredMessages,
           { type: "received", content: data.response }
         ]
       });
 
     } catch (error) {
       console.error("Error:", error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { type: "received", content: "不好意思，忙線中，請稍後再試。" },
-      ]);
+      setMessages((prevMessages) => {
+        const filteredMessages = prevMessages.filter(msg => msg.content !== "打字中...");
+        return [
+          ...filteredMessages,
+          { type: "received", content: "不好意思，忙線中，請稍後再試。" },
+        ];
+      });
     } finally {
       setLoading(false);
-      setTimeout(() => {
-        setTyping(false);
-        setLoading(false);
-      }, 5000);
+      setTyping(false);
     }
   };
 
@@ -79,17 +90,11 @@ export default function ChatComponent() {
   // 儲存對話
   async function saveHistory() {
     try {
-      if (user && user.email) {
-        await addDoc(collection(db, "chatHistory"), {
-          time: currentTime,
-          email: user.email,
-          message: messages,
-          id: user.uid
-        });
-        alert("本次對話已儲存");
-      } else {
-        console.log("儲存失敗");
-      }
+      await addDoc(collection(db, "chatHistory"), {
+        time: currentTime,
+        message: messages,
+      });
+      alert("本次對話已儲存");
     } catch (error) {
       console.log("有錯", error)
     }
@@ -162,14 +167,14 @@ export default function ChatComponent() {
           </div>
 
           <div className="mt-4 flex pl-10">
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="請放心輸入內容～輸入完畢，請用滑鼠點選右方「送出」"
               className="flex-1 py-3 px-3 pl-10 rounded-full bg-gray-100 focus:outline-none text-md"
-              value={inputValue} 
-              onChange={(e) => setInputValue(e.target.value)}  
-              onClick={() => handleSend(inputValue)} 
-              disabled={loading}    
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onClick={() => handleSend(inputValue)}
+              disabled={loading}
             />
             <button
               className="px-4 py-2 ml-3 text-white rounded-full bg-blue-500 hover:bg-blue-400 disabled:bg-gray-400 disabled:hover:bg-gray-400"
@@ -186,10 +191,10 @@ export default function ChatComponent() {
         <div className="ml-10 text-base tracking-wider">2. 結束後，請您再次點擊儲存對話，並且舉手告知實驗人員。</div>
       </div>
       <div className="ml-20">
-         <button className={chatEnd ? "bg-red-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-red-500" : "bg-sisal-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-sisal-500"}
-              onClick={chatEnd ? saveHistory : stopTalk}
-            >{chatEnd ? "儲存對話" : "結束對話"}</button>
-      </div>     
+        <button className={chatEnd ? "bg-red-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-red-500" : "bg-sisal-700 text-white px-4 py-2 rounded-full ml-3 hover:bg-sisal-500"}
+          onClick={chatEnd ? saveHistory : stopTalk}
+        >{chatEnd ? "儲存對話" : "結束對話"}</button>
+      </div>
     </div>
   );
 };
